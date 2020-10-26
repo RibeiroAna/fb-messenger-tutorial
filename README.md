@@ -57,7 +57,7 @@ Answer: It will depend on what city the customer wrote.
 
 question above represents one customer “intent”, or what the customer meant to ask with the phrase (or “utterance”) he or she just wrote. You can have multiple utterances for the same intent, for example the question “How can I order from you?” could be asked as well “Do you have a website where I can order from?”, or “Can I order online?”. You have to train your wit.ai app with some possible utterances that a customer can use to ask about that intent. You don’t have to add every possible way that the customer could ask, because wit.ai intelligence will infer  from the examples you gave.
 
-The [city] tag represents an entity. The customer could ask if you ship for several cities (for instance, New York City and Boston) and you should answer based on the city asks. Also, the customer could name the same city in several ways, for instance “New York City” could be “NYC” or “New York”.
+The [city] tag represents an entity. The customer could ask if you ship for several cities (for instance, New York City and Boston) and you should answer based on the city. Also, the customer could name the same city in several ways, for instance “New York City” could be “NYC” or “New York”.
 
 In the next tutorial section, you are going to learn how to add intents, utterances and entities to your wit.ai application, so you can made it to process the questions your customers made to you. The answer for those questions are going to be stored on your database that you are going to learn how to model on section #7.
 
