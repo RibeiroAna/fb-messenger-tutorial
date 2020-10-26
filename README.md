@@ -320,4 +320,4 @@ Now you can click on deploy button on your lambda console, wait a few seconds, a
 
 ## 9. Conclusions
 
-You have now a functional application on your messenger. Before putting it into production, so other users can test and use it, there is a process on messenger platform to validate your bot. Of course, the code is not production ready (it could be improved a lot) but from here I hope you can figure out how to put this functionality on your application.
+You have now a functional application on your messenger. Before putting it into production, so other users can test and use it, there is a process on messenger platform to validate your bot. 
