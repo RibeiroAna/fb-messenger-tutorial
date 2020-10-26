@@ -4,15 +4,15 @@ _Does your clients always message your Facebook page with the same kind of quest
 
 ### Table of contents:
 
-1. [Introduction](#Introduction)
-2. [Architecture](#Architecture)
-3. [Define your bot](#Define-your-bot)
-4. [Set up your wit.ai application](#Set-up-your-wit.ai-application)
-5. [Set up your webhook with API Gateway and Lambda](#Set-up-your-webhook-with-API-Gateway-and-Lambda)
-6. [Set up your Messenger application](#Set-up-your-Messenger-application)
-7. [Set up your database](#Set-up-your-database)
-8. [Implement your Lambda function](#Implement-your-Lambda-function)
-9. [Conclusions](#Conclusions)
+1. [Introduction](#1-Introduction)
+2. [Architecture](#2-Architecture)
+3. [Define your bot](#3-Define-your-bot)
+4. [Set up your wit.ai application](#4-Set-up-your-wit.ai-application)
+5. [Set up your webhook with API Gateway and Lambda](#5-Set-up-your-webhook-with-API-Gateway-and-Lambda)
+6. [Set up your Messenger application](#6-Set-up-your-Messenger-application)
+7. [Set up your database](#7-Set-up-your-database)
+8. [Implement your Lambda function](#8-Implement-your-Lambda-function)
+9. [Conclusions](#9-Conclusions)
 
 ## 1. Introduction
 
