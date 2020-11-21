@@ -1,5 +1,5 @@
 # Create a serverless FAQ Messenger bot with Wit.ai
-_Does your clients always message your Facebook page with the same kind of question? If so you should create a bot to answer them! Learn how!_
+_Do your clients always message your Facebook page with the same kind of question? If so, create a bot to answer them! Learn how!_
 
 
 ### Table of contents:
@@ -23,11 +23,11 @@ To follow this tutorial, you will need the following:
 2. An AWS account (Free tier is Ok), no previous AWS knowledge is necessary;
 3. Basic knowledge of programming (I’m going to use Python, but probably any programming language knowledge is fine, so you can understanding what I’m doing);
 
-To host your bot and database, you’ll use Serverless technologies. This technology reduces the time you need to set up and manager your infrastructure, and it scales automatically to match your demand. It is great for applications such as a Messenger bot.
+To host your bot and database, you’ll use Serverless technologies. This kind of technology reduces the time you need to set up and manage your infrastructure, and it scales automatically to match your demand. It is great for applications such as a Messenger bot.
 
 For Natural Language Processing (NLP), you are going to use Wit.ai, which is a Facebook platform that does half of the work necessary for creating a bot.
 
-You can see the whole code used in this tutorial under the "code" directory of this repository.
+You can see the whole code used in this tutorial under the "code" folder of this repository.
 
 [Back to top](#Table-of-contents)
 
