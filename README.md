@@ -1,28 +1,28 @@
 # Create a serverless FAQ Messenger bot with Wit.ai
-_Does your clients always message your Facebook page with the same kind of question? If so you should create a bot to answer them! Learn how!_
+_Do your clients always message your Facebook page with the same kind of question? If so, create a bot to answer them! Learn how!_
 
 
 ### Table of contents:
 
-1. [Introduction](#Introduction)
-2. [Architecture](#Architecture)
-3. [Define your bot](#Define-your-bot)
-4. [Set up your wit.ai application](#Set-up-your-wit.ai-application)
-5. [Set up your webhook with API Gateway and Lambda](#Set-up-your-webhook-with-API-Gateway-and-Lambda)
-6. [Set up your Messenger application](#Set-up-your-Messenger-application)
-7. [Set up your database](#Set-up-your-database)
-8. [Implement your Lambda function](#Implement-your-Lambda-function)
-9. [Next Steps](#Conclusions)
+1. [Introduction](#1-Introduction)
+2. [Define the User Interaction](#2-Design-the-User-Interaction)
+3. [Architecture](#3-Architecture)
+4. [Set up your wit.ai application](#4-Set-up-your-wit.ai-application)
+5. [Set up your webhook with API Gateway and Lambda](#5-Set-up-your-webhook-with-API-Gateway-and-Lambda)
+6. [Set up your Messenger application](#6-Set-up-your-Messenger-application)
+7. [Set up your database](#7-Set-up-your-database)
+8. [Implement your Lambda function](#8-Implement-your-Lambda-function)
+9. [Next Steps](#9-Next-Steps)
 
 ## 1. Introduction
 
-If you have a Facebook page which gets tons of messages and you cannot answer them anymore, you should think about creating a Bot, so when users message your page they can get an (almost) instant answer!
+If you have a Facebook page that gets tons of messages and you cannot answer them anymore, you should considere following this tutorial and creating a bot to answer them!
 
-**In here you are going to learn the following:**
+**Here you are going to learn:**
 
 * How to use Wit.ai, a platform which makes Natural Language Processing (NLP) easy and seamless!
 * How to setup a messenger bot;
-* How to code your bot to answer your inquires, and how to host it in AWS Lambda - a serverless technology which makes escalation really easy to deal with - and better, it is free up to 1 million requests month! 
+* How to code your bot to answer your inquires, and how to host it in AWS Lambda - a serverless technology which makes escalation really easy to deal with - and better, it is free up to 1 million requests per month! 
 
 **Be ready! To follow this tutorial, you will need the following:**
 
@@ -32,6 +32,7 @@ If you have a Facebook page which gets tons of messages and you cannot answer th
 
 - [ ] Basic knowledge of programming (I’m going to use Python, but probably any programming language knowledge is fine, so you can understanding what I’m doing);
 
+You can see the full code used in this tutorial under the "code" folder of this repository.
 
 [Back to top](#Table-of-contents)
 
@@ -60,6 +61,8 @@ In the last example, it is a message that is out of the scope of this applicatio
 
 In the next steps, you are going to learn how to add intents, utterances and entities to your wit.ai application, so you can made it to process the questions your customers made to you. In this tutorial, I'm going to use this conversation as an example, but any question could be added!
 
+[Back to top](#Table-of-contents)
+
 ## 3. Architecture
 
 For the sake of this tutorial, you are going to use the following architecture:
@@ -75,8 +78,6 @@ It means that when your page gets a message the following happens:
 * Your lambda will send the answer back to Messenger, which will show it to your customers; 
 
 This architecture solution is good if you want to deploy your bot only to Facebook Messenger. If you want to deploy it to more platforms (such as Whatsapp, your own website or Telegram), you will have to query wit.ai on the Lambda (because not every platform will have the option to integrate with wit.ai, as Messenger does). In my experience, querying wit.ai on lambda increases the latency a little bit. Probably, after following the steps of this tutorial, you will be able to figure out how to change this application to be used with many other platforms.
-
-[Back to top](#Table-of-contents)
 
 [Back to top](#Table-of-contents)
 
@@ -334,12 +335,16 @@ Now you can click on deploy button on your lambda console, wait a few seconds, a
 
 ![msg-5](pictures/msg-5.png)
 
+[Back to top](#Table-of-contents)
+
 ## 9. Next Steps
 
-Now that you learned the basis of how Wit.ai and Facebook Messenger works and how to create a functional application for them, here are some ideias that you could try:
+Now that you learned the basis of how Wit.ai and Facebook Messenger works and how to create a functional application for them, here are some ideas that you could try:
 
 1. Try to modify your app to send [Quick Replies](https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies/) to your user;
 2. Add more platforms to it, such as Whatsapp or your own React Native App;
 3. Try to enable voice recognition on it! So if users send audio messages, they can get answers;
 4. Notify a human if the bot cannot answer the person;
 5. You could use [sentiment analysis](https://medium.com/wit-ai/%EF%B8%8F-new-sentiment-analysis-entity-%EF%B8%8F-52925e434e32) to get how your clients felt in the conversation;
+
+[Back to top](#Table-of-contents)
