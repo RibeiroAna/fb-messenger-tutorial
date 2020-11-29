@@ -12,54 +12,71 @@ _Does your clients always message your Facebook page with the same kind of quest
 6. [Set up your Messenger application](#Set-up-your-Messenger-application)
 7. [Set up your database](#Set-up-your-database)
 8. [Implement your Lambda function](#Implement-your-Lambda-function)
-9. [Conclusions](#Conclusions)
+9. [Next Steps](#Conclusions)
 
 ## 1. Introduction
 
-In this tutorial, I’ll teach you how to create a bot to answer Frequent Answered Questions (FAQ) on your Facebook page, so when users message you they can get an (almost) instant answer about the question s/he made. 
+If you have a Facebook page which gets tons of messages and you cannot answer them anymore, you should think about creating a Bot, so when users message your page they can get an (almost) instant answer!
 
-To follow this tutorial, you will need the following:
-1. A Facebook account and a Facebook page;
-2. An AWS account (Free tier is Ok), no previous AWS knowledge is necessary;
-3. Basic knowledge of programming (I’m going to use Python, but probably any programming language knowledge is fine, so you can understanding what I’m doing);
+**In here you are going to learn the following:**
 
-To host your bot and database, you’ll use Serverless technologies. This technology reduces the time you need to set up and manager your infrastructure, and it escales automatically to match your demand. It is great for applications such as a Messenger bot.
+* How to use Wit.ai, a platform which makes Natural Language Processing (NLP) easy and seamless!
+* How to setup a messenger bot;
+* How to code your bot to answer your inquires, and how to host it in AWS Lambda - a serverless technology which makes escalation really easy to deal with - and better, it is free up to 1 million requests month! 
 
-For Natural Language Processing (NLP), you are going to use Wit.ai, which is a Facebook platform that does half of the work necessary for creating a bot.
+**Be ready! To follow this tutorial, you will need the following:**
 
-You can see the whole code used in this tutorial under the "code" directory of this repository.
+- [ ] A Facebook account and a Facebook page;
+
+- [ ] An AWS account (Free tier is Ok), no previous AWS knowledge is necessary;
+
+- [ ] Basic knowledge of programming (I’m going to use Python, but probably any programming language knowledge is fine, so you can understanding what I’m doing);
+
 
 [Back to top](#Table-of-contents)
 
-## 2. Architecture
+## 2. Design the User Interaction
+
+Before setting up your wit ai account and your bot infrastructure, it is important to learn about some Natural Language Processing (NLP) concepts and think about different ways that the user may interact with your page. A user interaction with a Facebook page of an online shop could be something like that:
+
+```
+
+😃 User: "How can I order from you?"
+🤖 Wit: "Go to our website www.example.com and order there"
+
+😃 User: "Do you ship to [city]?"
+🤖 Wit: "Yes", or "No" (Depending on which city the customer wrote)
+
+😃 User: "What is the meaning of life universe and everything?"
+🤖 Wit: "Sorry, I didn't Understand!"
+
+```
+
+Every question above represents one customer **intent**, or what the customer meant to ask with the sentence (or **utterance**) they wrote. You can have multiple utterances for the same intent, for example the question `How can I order from you?` could be asked as well `Do you have a website where I can order from?`, but they both have the same meaning (ask how to order). You have to train your wit.ai app with some possible utterances that a customer can use to ask about that intent. You don’t have to add every possible way that the customer could ask, because wit.ai intelligence will infer  from the examples you gave.
+
+The [city] tag represents an **entity**. The customer could ask if you ship to several cities (for instance, New York City and Boston) and you should answer based on the city asks. Also, the customer could name the same city in several ways, for instance “New York City” could be “NYC” or “New York”.
+
+In the last example, it is a message that is out of the scope of this application (😞), so it means wit could not find any pre-programmed intent that match thsi question and you will return a generic error message.
+
+In the next steps, you are going to learn how to add intents, utterances and entities to your wit.ai application, so you can made it to process the questions your customers made to you. In this tutorial, I'm going to use this conversation as an example, but any question could be added!
+
+## 3. Architecture
 
 For the sake of this tutorial, you are going to use the following architecture:
 
 ![Architecture](pictures/architecture.png)
 
-Whenever your page gets a message, Facebook Messenger will query your wit.ai application that will process the message using NLP techniques and send the result of that back to Messenger. So Messenger will send a call to your API (powered by API Gateway) which will invoke a lambda function that will query a database looking for the correct answer for that question, so the lambda will send the answer back through Messenger API.
+It means that when your page gets a message the following happens:
+
+* Messenger will query Wit.ai to get an interpretation of the message received;
+* Wit.ai will answer back to Messenger with a list of intents and entities for the message received (the list can be empty!);
+* Messenger will send he wit answer together with the original message to your Webhook (which was configured with Api Gateway);
+* Your lambda will look for a answer for the question in your answer database;
+* Your lambda will send the answer back to Messenger, which will show it to your customers; 
 
 This architecture solution is good if you want to deploy your bot only to Facebook Messenger. If you want to deploy it to more platforms (such as Whatsapp, your own website or Telegram), you will have to query wit.ai on the Lambda (because not every platform will have the option to integrate with wit.ai, as Messenger does). In my experience, querying wit.ai on lambda increases the latency a little bit. Probably, after following the steps of this tutorial, you will be able to figure out how to change this application to be used with many other platforms.
 
 [Back to top](#Table-of-contents)
-
-## 3. Define your bot
-
-Before setting up your wit ai account and your bot infrastructure, it is important to learn about some Natural Language Processing (NLP) concepts and define which are the questions that your bot will answer.
-
-For instance, suppose you are the owner of a local shop that because of COVID-19 pandemic setup an online infrastructure (including a website and a facebook page) to sell their products to the world. Let’s say that the most answered questions to that page are the following ones:
-
-1) Question: How can I order from you?
-Answer: go to our website www.example.com and order there
-
-2) Question: Do you ship to my [city]?
-Answer: It will depend on what city the customer wrote.
-
-question above represents one customer “intent”, or what the customer meant to ask with the phrase (or “utterance”) he or she just wrote. You can have multiple utterances for the same intent, for example the question “How can I order from you?” could be asked as well “Do you have a website where I can order from?”, or “Can I order online?”. You have to train your wit.ai app with some possible utterances that a customer can use to ask about that intent. You don’t have to add every possible way that the customer could ask, because wit.ai intelligence will infer  from the examples you gave.
-
-The [city] tag represents an entity. The customer could ask if you ship for several cities (for instance, New York City and Boston) and you should answer based on the city asks. Also, the customer could name the same city in several ways, for instance “New York City” could be “NYC” or “New York”.
-
-In the next tutorial section, you are going to learn how to add intents, utterances and entities to your wit.ai application, so you can made it to process the questions your customers made to you. The answer for those questions are going to be stored on your database that you are going to learn how to model on section #7.
 
 [Back to top](#Table-of-contents)
 
@@ -74,11 +91,11 @@ Wit.ai is the core of the Natural Language Processing of your bot. To set up you
 
 ![wit-1](pictures/wit-1.png)
 
-3. Then, after creating your application, you are going to create the intents. Let’s call the first intent defined on the last section as “how_to_order” and the second one “shipping_available”. On your wit.ai portal, select the application you just created, and go to the management menu and select intent, then press the button “+ Intent” and type the name we just defined. Do this for each intent you want to create.
+3. Then, after creating your application, you are going to create the intents. Let’s call the first intent defined in the second section as “how_to_order” and the second one “shipping_available”. On your wit.ai portal, select the application you just created, and go to the management menu and select intent, then press the button “+ Intent” and type the name we just defined. Do this for each intent you want to create.
 
 ![wit-2](pictures/wit-2.png)
 
-4. Now is time to create the entity for city, go to the entities page  and hit the button “+ Entity”. You can use three strategies for looking up to entities, Free Text, Keywords or a combination of both cases. In this case you are going to use “Free Text & Keywords”, but if you want understand more why, read about it on [wit.ai page](https://wit.ai/docs/recipes#which-entity-should-you-use)
+4. Now is time to create the entity for city, go to the entities page  and hit the button “+ Entity”. You can use three strategies for looking up to entities: Free Text, Keywords or a combination of both cases. In this case you are going to use “Free Text & Keywords”, but if you want understand more why, read about it on [wit.ai page](https://wit.ai/docs/recipes#which-entity-should-you-use)
 
 ![wit-3](pictures/wit-3.png)
 
@@ -89,7 +106,6 @@ Wit.ai is the core of the Natural Language Processing of your bot. To set up you
 6. Now you should add synonyms on the same page you created the keyword. Add as many synonyms you want. 
 
 ![wit-5](pictures/wit-5.png)
-
 
 Do this process over and over again to create as many keywords you wish.
 
@@ -173,7 +189,7 @@ Now you are good to go!
 
 With what you’ve done so far, Facebook will query your wit.ai app and send a request to your lambda everytime it gets a new message. But now you should store the answer for that messages in your database.
 
-You may be asking yourself why use a database, and not in an in memory data structure such as a dictionary, the answer is very simple, if you do like that, you will have to redeploy your app every time you want to add a new question, it it may cause down times and you will have more chance to add bugs into production.
+You may be asking yourself why use a database, and not in an in memory data structure such as a dictionary to store answers, the answer is very simple: if you do like that, you will have to redeploy your app every time you want to add a new question, it it may cause down times and you will have more chance to add bugs into production.
 
 You are going to use for this tutorial the database DynamoDb. DynamoDb is a fully managed NoSQL database. Some of the advantages of NoSQL when compared to SQL databases is that different entries to the database can have different structures because it’s based in a JSON structure, and it is optimized for search operations when compared to SQL databases. If you have performance issues with your DynamoDb you can additionally configure DAX (DynamoDb Accelerator) that creates a cache of your database to quicker access. For this tutorial, you are not going to use something as cache but you could in a real life application.
 
@@ -279,7 +295,7 @@ def decide_answer(body):
 
 ```
 
-3. Now you should implement the function that sends the message to facebook:
+3. Now you should implement the function that sends the message back to facebook:
 
 ```python
 def send_response(message, body):
@@ -318,6 +334,12 @@ Now you can click on deploy button on your lambda console, wait a few seconds, a
 
 ![msg-5](pictures/msg-5.png)
 
-## 9. Conclusions
+## 9. Next Steps
 
-You have now a functional application on your messenger. Before putting it into production, so other users can test and use it, there is a process on messenger platform to validate your bot. Of course, the code is not production ready (it could be improved a lot) but from here I hope you can figure out how to put this functionality on your application.
+Now that you learned the basis of how Wit.ai and Facebook Messenger works and how to create a functional application for them, here are some ideias that you could try:
+
+1. Try to modify your app to send [Quick Replies](https://developers.facebook.com/docs/messenger-platform/send-messages/quick-replies/) to your user;
+2. Add more platforms to it, such as Whatsapp or your own React Native App;
+3. Try to enable voice recognition on it! So if users send audio messages, they can get answers;
+4. Notify a human if the bot cannot answer the person;
+5. You could use [sentiment analysis](https://medium.com/wit-ai/%EF%B8%8F-new-sentiment-analysis-entity-%EF%B8%8F-52925e434e32) to get how your clients felt in the conversation;
